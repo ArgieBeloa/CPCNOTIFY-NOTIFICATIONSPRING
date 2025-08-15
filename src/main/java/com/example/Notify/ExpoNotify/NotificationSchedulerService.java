@@ -18,7 +18,7 @@ public class NotificationSchedulerService {
     private ExpoPushNotificationService expoPushNotificationService;
 
     // Run every hour (cron expression)
-    @Scheduled(cron = "0 0 * * * *")
+    @Scheduled(cron = "0 */30 * * * *")
     public void sendScheduledNotifications() {
         String department = "IT"; // or get dynamically from somewhere
 
