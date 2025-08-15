@@ -15,20 +15,40 @@ public class NotificationController {
     @Autowired
     public NotificationService notificationService;
 
-    @PostMapping("/add")
-    public NotificationModel addExpoNotification(@RequestBody NotificationModel newNotificationModel){
+     @GetMapping("/getAll")
+     public  ResponseEntity<List<NotificationModel>> getAll(){
 
+         List<NotificationModel> notificationModels = notificationService.getAll();
+         return  new ResponseEntity<>(notificationModels, HttpStatus.OK);
+     }
 
+     @PostMapping("/notification/add")
+     public NotificationModel addNotificationModel(@RequestBody NotificationModel notificationModel){
 
-        return  notificationService.addExpoNotification(newNotificationModel);
+         return notificationService.addNotificationModel(notificationModel);
+
+     }
+
+//    @PostMapping("/add")
+//    public NotificationModel addExpoNotification(@RequestBody NotificationModel newNotificationModel){
+//
+//
+//
+//        return  notificationService.addExpoNotification(newNotificationModel);
+//    }
+
+    @PostMapping("/add/{department}")
+    public String addStudent(@PathVariable String department, @RequestBody StudentExpoData data) {
+        notificationService.addStudentDataByDepartment(department, data);
+        return "StudentExpoData added for department: " + department;
     }
 
-    @PostMapping("/{department}/expoToken")
-    public ResponseEntity<NotificationModel> addStudentExpoData(
-            @PathVariable String department,
-            @RequestBody StudentExpoData newData) {
-        NotificationModel updatedNotification = notificationService.addStudentExpoData(department, newData);
-        return ResponseEntity.ok(updatedNotification);
+//    delete notification model by id
+    @DeleteMapping("/{id}/delete")
+    public  ResponseEntity<?> delete(@PathVariable String id){
+       notificationService.deleteNotificationModel(id);
+        return ResponseEntity.ok("Notification model Deleted id: "+ id);
     }
+
 
 }
