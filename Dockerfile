@@ -2,8 +2,10 @@
 FROM maven:3.8.5-openjdk-17 AS build
 WORKDIR /app
 
-# Copy the project files (including src/, pom.xml)
-COPY src .
+# Copy pom.xml first (for caching)
+COPY pom.xml .
+# Then copy source files
+COPY src ./src
 
 # Build the application JAR (skip tests if desired)
 RUN mvn clean package -DskipTests
